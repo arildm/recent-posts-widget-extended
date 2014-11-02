@@ -11,7 +11,7 @@
 
 /**
  * Sets up the default arguments.
- * 
+ *
  * @since  0.9.4
  */
 function rpwe_get_default_args() {
@@ -59,7 +59,7 @@ function rpwe_get_default_args() {
 
 /**
  * Outputs the recent posts.
- * 
+ *
  * @since  0.9.4
  */
 function rpwe_recent_posts( $args = array() ) {
@@ -96,10 +96,10 @@ function rpwe_get_recent_posts( $args = array() ) {
 	if ( $args['styles_default'] == false && ! empty( $args['css'] ) ) {
 		echo '<style>' . $args['css'] . '</style>';
 	}
-	
+
 	// Get the posts query.
 	$posts = rpwe_get_posts( $args );
-	
+
 	if ( $posts->have_posts() ) :
 
 		$html = '<div ' . ( ! empty( $args['cssID'] ) ? 'id="' . sanitize_html_class( $args['cssID'] ) . '"' : '' ) . ' class="rpwe-block">';
@@ -132,7 +132,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 							// If no post thumbnail found, check if Get The Image plugin exist and display the image.
 							elseif ( function_exists( 'get_the_image' ) ) :
-								$html .= get_the_image( array( 
+								$html .= get_the_image( array(
 									'height'        => (int) $args['thumb_height'],
 									'width'         => (int) $args['thumb_width'],
 									'image_class'   => esc_attr( $args['thumb_align'] ) . ' rpwe-thumb get-the-image',
@@ -169,7 +169,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 							$html .= '<div class="rpwe-summary">';
 								$html .= wp_trim_words( apply_filters( 'rpwe_excerpt', get_the_excerpt() ), $args['length'], ' &hellip;' );
 								if ( $args['readmore'] ) :
-									$html .= '<a href="' . esc_url( get_permalink() ) . '" class="more-link">' . $args['readmore_text'] . '</a>';
+									$html .= ' <a href="' . esc_url( get_permalink() ) . '" class="more-link">' . $args['readmore_text'] . '</a>';
 								endif;
 							$html .= '</div>';
 						endif;
@@ -189,7 +189,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 	// Allow devs to hook in stuff after the loop.
 	do_action( 'rpwe_after_loop' );
-	
+
 	// Return the  posts markup.
 	return $args['before'] . apply_filters( 'rpwe_markup', $html ) . $args['after'];
 
@@ -247,7 +247,7 @@ function rpwe_get_posts( $args = array() ) {
 				'taxonomy' => $slug,
 				'field'    => 'id',
 				'terms'    => $ids,
-				'operator' => $operator 
+				'operator' => $operator
 			);
 		}
 
@@ -260,7 +260,7 @@ function rpwe_get_posts( $args = array() ) {
 
 	// Perform the query.
 	$posts = new WP_Query( $query );
-	
+
 	return $posts;
 
 }
