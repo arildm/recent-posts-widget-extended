@@ -113,6 +113,7 @@ class Recent_Posts_Widget_Extended extends WP_Widget {
 		$instance['date_relative']    = isset( $new_instance['date_relative'] ) ? (bool) $new_instance['date_relative'] : false;
 		$instance['readmore']         = isset( $new_instance['readmore'] ) ? (bool) $new_instance['readmore'] : false;
 		$instance['readmore_text']    = strip_tags( $new_instance['readmore_text'] );
+		$instance['link_target']      = $new_instance['link_target'];
 
 		$instance['thumb']            = isset( $new_instance['thumb'] ) ? (bool) $new_instance['thumb'] : false;
 		$instance['thumb_height']     = (int)( $new_instance['thumb_height'] );

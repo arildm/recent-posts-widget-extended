@@ -239,6 +239,17 @@
 	</p>
 
 	<p>
+		<label for="<?php echo $this->get_field_id( 'link_target' ); ?>">
+			<?php _e( 'Link Target', 'rpwe' ); ?>
+		</label>
+		<select class="widefat" id="<?php echo $this->get_field_id( 'link_target' ); ?>" name="<?php echo $this->get_field_name( 'link_target' ); ?>" style="width:100%;">
+			<option value="post" <?php selected( $instance['link_target'], 'post' ); ?>><?php _e( 'Post', 'rpwe' ) ?></option>
+			<option value="category" <?php selected( $instance['link_target'], 'category' ); ?>><?php _e( 'Category', 'rpwe' ) ?></option>
+			<?php // TODO: Note that if "Category" is selected, the target will be the _first_ category. ?>
+		</select>
+	</p>
+
+	<p>
 		<input id="<?php echo $this->get_field_id( 'date' ); ?>" name="<?php echo $this->get_field_name( 'date' ); ?>" type="checkbox" <?php checked( $instance['date'] ); ?> />
 		<label class="input-checkbox" for="<?php echo $this->get_field_id( 'date' ); ?>">
 			<?php _e( 'Display Date', 'rpwe' ); ?>

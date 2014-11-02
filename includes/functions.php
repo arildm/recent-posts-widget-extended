@@ -44,6 +44,7 @@ function rpwe_get_default_args() {
 		'date_relative'    => false,
 		'readmore'         => false,
 		'readmore_text'    => __( 'Read More &raquo;', 'rpwe' ),
+		'link_target'      => 'post',
 
 		'styles_default'   => true,
 		'css'              => $css_defaults,
@@ -108,6 +109,16 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 				while ( $posts->have_posts() ) : $posts->the_post();
 
+					// Determine link target: post or category.
+					$url = esc_url( get_permalink() );
+					$url_title = sprintf( esc_attr__( 'Permalink to %s', 'rpwe' ), the_title_attribute( 'echo=0' ) );
+					if ( $args['link_target'] == 'category' ) {
+						$categories = get_the_category();
+						$category = reset( $categories );
+						$url = get_category_link( $category->term_id );
+						$url_title = sprintf( esc_attr__( 'Category %s', 'rpwe' ), $category->name );
+					}
+
 					// Thumbnails
 					$thumb_id = get_post_thumbnail_id(); // Get the featured image id.
 					$img_url  = wp_get_attachment_url( $thumb_id ); // Get img URL.
@@ -122,7 +133,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 							// Check if post has post thumbnail.
 							if ( has_post_thumbnail() ) :
-								$html .= '<a href="' . esc_url( get_permalink() ) . '"  rel="bookmark">';
+								$html .= '<a href="' . $url . '"  rel="bookmark">';
 									if ( $image ) :
 										$html .= '<img class="' . esc_attr( $args['thumb_align'] ) . ' rpwe-thumb" src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title() ) . '">';
 									else :
@@ -138,12 +149,13 @@ function rpwe_get_recent_posts( $args = array() ) {
 									'image_class'   => esc_attr( $args['thumb_align'] ) . ' rpwe-thumb get-the-image',
 									'image_scan'    => true,
 									'default_image' => esc_url( $args['thumb_default'] )
+									// TODO: Pass $url
 								) );
 
 							// Display default image.
 							elseif ( ! empty( $args['thumb_default'] ) ) :
 								$html .= sprintf( '<a href="%1$s" rel="bookmark"><img class="%2$s rpwe-thumb rpwe-default-thumb" src="%3$s" alt="%4$s" width="%5$s" height="%6$s"></a>',
-									esc_url( get_permalink() ),
+									$url,
 									esc_attr( $args['thumb_align'] ),
 									esc_url( $args['thumb_default'] ),
 									esc_attr( get_the_title() ),
@@ -155,7 +167,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 
 						endif;
 
-						$html .= '<h3 class="rpwe-title"><a href="' . esc_url( get_permalink() ) . '" title="' . sprintf( esc_attr__( 'Permalink to %s', 'rpwe' ), the_title_attribute( 'echo=0' ) ) . '" rel="bookmark">' . esc_attr( get_the_title() ) . '</a></h3>';
+						$html .= '<h3 class="rpwe-title"><a href="' . $url . '" title="' . $url_title . '" rel="bookmark">' . esc_attr( get_the_title() ) . '</a></h3>';
 
 						if ( $args['date'] ) :
 							$date = get_the_date();
@@ -169,7 +181,7 @@ function rpwe_get_recent_posts( $args = array() ) {
 							$html .= '<div class="rpwe-summary">';
 								$html .= wp_trim_words( apply_filters( 'rpwe_excerpt', get_the_excerpt() ), $args['length'], ' &hellip;' );
 								if ( $args['readmore'] ) :
-									$html .= ' <a href="' . esc_url( get_permalink() ) . '" class="more-link">' . $args['readmore_text'] . '</a>';
+									$html .= ' <a href="' . $url . '" class="more-link">' . $args['readmore_text'] . '</a>';
 								endif;
 							$html .= '</div>';
 						endif;
